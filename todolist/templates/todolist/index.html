@@ -1,30 +1,41 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-<head>
-<title>SANELA</title>
-<link rel="stylesheet" href="{% static 'todolist/styles.css' %}"/>
+<head><title>SANELA</title>
+<link rel="stylesheet" href="{% static 'todolist/static/styles.css' %}"/>
 </head>
+
 <body>
-<h1>My First Django project</h1>
-<p>I love it.</p>
+<h1>What to do today</h1>
+
+<!--     <input type="text" placeholder="Enter todoList">   -->
+<form action="{% url 'add' %}" method="POST" role="form">			
+{% csrf_token %}							
+{{ form.text}}							 
+<button type="submit" >ADD</button>												
+</form>
+
+<p></p>
+<a href="{% url 'deletecompleted' %}">
+<button type="button">Delete completed</button>
+</a>
+
+<a href="{% url 'deleteall' %}">
+    <button type="button">Delete all</button>
+</a>
+
 <ul>
     {% for todolist in todo_items %}
         {%if todolist.completed %} <!-- see VIEWS -->
         <li class="todo-completed">{{todolist.text}}</li>
         {% else %}
-        <a href="#"><li>{{todolist.text}}</li></a>
+        <a href="{% url 'completed' todolist.id %}"><li>{{todolist.text}}</li></a>
         {% endif %}
         {% endfor %}
         <!--
         <li>Learn something new.</li>
         <li class>Buy a new journal</li>
         <li class>Book a dentist appointment.</li>
-        -->
-        <!--
-        .todo-completed {
-            text-decoration: line-through;
-            background: rgba(149, 165, 166, .3);
         -->
 </ul>
 </body>
